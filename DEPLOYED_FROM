@@ -1,0 +1,4 @@
+source_repo: masamasaking/machikarute
+source_sha: a263005bfdef02f21aa80de96e8685375aadfa64
+site_src: app/
+note: このサイトは正本repoの上記SHAの app/ から生成（scripts/deploy-site.sh）
