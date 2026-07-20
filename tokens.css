@@ -1,0 +1,63 @@
+/* Hallmark · genre: editorial · macrostructure: Split Studio · theme: Garden · enrichment: none · nav: N9 · footer: Ft6 */
+/* Garden — light paper · leaf-green anchor (hue 152) · JP editorial pairing */
+
+:root {
+  /* colour — OKLCH, anchor hue 152 (leaf green) */
+  --color-paper:    oklch(97.5% 0.008 152);
+  --color-paper-2:  oklch(94.5% 0.012 150);
+  --color-paper-3:  oklch(91%   0.016 148);
+  --color-rule:     oklch(85%   0.014 150);
+  --color-neutral:  oklch(48%   0.012 152);
+  --color-muted:    oklch(38%   0.014 154);
+  --color-ink:      oklch(21%   0.016 156);
+  --color-accent:   oklch(46%   0.13  152);
+  --color-accent-soft: oklch(90% 0.05 152);
+  --color-focus:    oklch(48%   0.15  152);
+  /* confidence & status — never colour-only; always paired with text */
+  --color-conf-high:   oklch(46% 0.13 152);
+  --color-conf-med:    oklch(58% 0.12 80);
+  --color-conf-low:    oklch(50% 0.02 152);
+  --color-unconfirmed: oklch(38% 0.014 154);
+
+  /* type — display: Shippori Mincho · body: Zen Kaku Gothic New · outlier: IBM Plex Mono (金額数字のみ) */
+  --font-display: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-body:    "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --font-outlier: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* scale — major third 1.25 */
+  --text-xs:   0.75rem;
+  --text-sm:   0.85rem;
+  --text-base: 1rem;
+  --text-md:   1.25rem;
+  --text-lg:   1.5625rem;
+  --text-xl:   1.9531rem;
+  --text-2xl:  2.4414rem;
+  --text-display: clamp(2.1rem, 4.2vw + 0.8rem, 4.4rem);
+
+  /* space — 4pt scale */
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:  cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long:  420ms;
+
+  /* misc */
+  --rule-hairline: 1px solid var(--color-rule);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --page-gutter: clamp(1rem, 4vw, 4rem);
+  --z-base: 1;
+  --z-raised: 10;
+  --z-sticky: 200;
+}

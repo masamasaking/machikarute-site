@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>マチカルテ — 医療的ケア児と家族のための、自治体くらべるカルテ</title>
+<meta name="description" content="引っ越しで、わが子への支援はどう変わる？ 医療的ケア児家庭のための自治体制度比較。全項目に公式出典つき。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav-edge">
+  <a class="wordmark" href="#">マチカルテ</a>
+  <div class="nav-links">
+    <a class="cta-outline" href="gikai.html">議会ビュー</a>
+    <a class="cta-outline" href="#shikumi">データのつくり方</a>
+  </div>
+</header>
+
+<main>
+  <!-- Hero — Split Studio: 左＝問いと選択、右＝実データによる証明 -->
+  <section class="hero split">
+    <div class="hero__ask reveal" style="--i:0">
+      <h1 class="hero__title">引っ越しで、<br>支援は変わる。</h1>
+      <p class="hero__lede">同じ子でも、住む街が変わると受けられる支援は変わります。医療的ケア児と暮らす家族のために、自治体の制度をならべて見られるカルテをつくりました。<strong>すべての項目に、自治体公式ページの出典がついています。</strong></p>
+
+      <form class="picker" id="picker" autocomplete="off">
+        <div class="picker__field">
+          <label for="sel-a">いま住んでいる街</label>
+          <select id="sel-a" required></select>
+        </div>
+        <div class="picker__field">
+          <label for="sel-b">引っ越し先の候補</label>
+          <select id="sel-b" required></select>
+        </div>
+        <button type="submit" class="btn-compare" id="btn-compare">くらべる</button>
+      </form>
+      <p class="picker__note" id="picker-note"></p>
+    </div>
+
+    <div class="hero__proof reveal" style="--i:1" id="hero-proof" aria-label="実際のデータ差の例">
+      <!-- app.js が実データから1件の差分例を描画する。捏造数値は使わない -->
+    </div>
+  </section>
+
+  <!-- 比較カルテ本体 -->
+  <section class="karte" id="karte" hidden>
+    <div class="karte__head">
+      <h2 class="karte__title" id="karte-title"></h2>
+      <p class="karte__sub">それぞれの値の「出典」を開くと、根拠になった自治体公式ページの原文が読めます。<span class="nowrap">取得日つき。</span></p>
+    </div>
+    <div class="karte__cols" id="karte-cols" aria-hidden="true"></div>
+    <div id="karte-rows"></div>
+    <p class="karte__closing">最終判断の前に、必ず両方の自治体窓口で最新の内容をご確認ください。制度は年度替わりに変わることがあります。</p>
+  </section>
+
+  <!-- データの正直な限界 -->
+  <section class="shikumi split" id="shikumi">
+    <div class="shikumi__text">
+      <h2>このデータの<br>つくり方と、限界。</h2>
+      <p>マチカルテのデータは、AIエージェントが各自治体の公式サイト・要綱・しおりを読み、<strong>原文の引用と出典URLをセットで</strong>記録したものです。引用のない数値はデータベースに入れていません。</p>
+      <p>それでも、限界があります。制度は年度替わりに改定されます。ページの読み違いもゼロにはできません。だからマチカルテは「間違えない」ことではなく、<strong>「根拠を隠さない」こと</strong>を約束します。</p>
+    </div>
+    <ul class="shikumi__facts">
+      <li><span class="fact__label">出典</span>自治体公式ドメインと国（go.jp）のみ。まとめサイトは使いません。</li>
+      <li><span class="fact__label">引用</span>金額・対象年齢には原文の該当文を必ず添えます。</li>
+      <li><span class="fact__label">確信度</span>全項目に「たしかさ」の表示。曖昧なものは曖昧と書きます。</li>
+      <li><span class="fact__label">未確認</span>見つからなかった項目は「未確認」。存在しないとは断定しません。</li>
+      <li><span class="fact__label">訂正</span>「実際は違った」を見つけたら <a href="mailto:masaking925@gmail.com?subject=マチカルテ訂正報告">こちらから</a>教えてください。すぐ直します。</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="foot-letter">
+  <p class="foot-letter__close">わが子と暮らす街を選ぶことが、<br>情報戦でなくなりますように。<br><span class="foot-letter__sign">— ALIFE</span></p>
+  <p class="foot-letter__ps">追伸 — このカルテは家族の声で育ちます。足りない街、足りない項目があれば<a href="mailto:masaking925@gmail.com?subject=マチカルテ要望">お便り</a>をください。</p>
+  <p class="foot-letter__legal" id="foot-meta"></p>
+</footer>
+
+<script src="data.js"></script>
+<script src="gikai.js"></script>
+<script src="shigen.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

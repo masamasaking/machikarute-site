@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>議会ビュー — うちの街は、うちの子のことを、話していますか。｜マチカルテ</title>
+<meta name="description" content="49自治体の議会会議録から「医療的ケア児」の質疑を集めました。制度の建前ではなく、議論の生の記録です。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="gikai-view.css">
+</head>
+<body>
+
+<header class="nav-edge">
+  <a class="wordmark" href="index.html">マチカルテ</a>
+  <a class="cta-outline" href="index.html">制度をくらべる</a>
+</header>
+
+<main>
+  <!-- 2.1 Hero -->
+  <section class="gikai-hero">
+    <div class="gikai-hero__ask reveal" style="--i:0">
+      <h1 class="gikai-hero__title">うちの街は、<br>うちの子のことを、<br>話していますか。</h1>
+      <p class="gikai-hero__lede">49自治体の議会会議録から「医療的ケア児」の質疑を集めました。制度の建前ではなく、議論の生の記録です。</p>
+
+      <form class="gikai-picker" id="gikai-picker" autocomplete="off">
+        <fieldset class="theme-cards" id="theme-cards">
+          <legend>知りたいことを選ぶ（任意）</legend>
+          <div class="theme-cards__grid">
+            <button type="button" class="theme-card" data-theme="hoiku" aria-pressed="false">保育園・幼稚園に行きたい</button>
+            <button type="button" class="theme-card" data-theme="gakko" aria-pressed="false">学校に看護師は来てくれる？</button>
+            <button type="button" class="theme-card" data-theme="saigai" aria-pressed="false">停電や災害が怖い</button>
+            <button type="button" class="theme-card" data-theme="respite" aria-pressed="false">預け先（レスパイト）が足りない</button>
+            <button type="button" class="theme-card" data-theme="ikou" aria-pressed="false">18歳からが不安</button>
+            <button type="button" class="theme-card" data-theme="soudan" aria-pressed="false">誰に相談すればいい？</button>
+          </div>
+        </fieldset>
+        <div class="picker__field">
+          <label for="gikai-sel">街を選ぶ</label>
+          <select id="gikai-sel" required></select>
+        </div>
+        <button type="submit" class="btn-compare" id="gikai-btn">見る</button>
+      </form>
+      <p class="gikai-error" id="gikai-error" role="status" hidden>指定された街のデータが見つかりません。街を選びなおしてください。</p>
+    </div>
+  </section>
+
+  <!-- 画面2: この街の現在地（問い×街）P0-IA.md §1 -->
+  <section class="theme-view" id="theme-view" hidden>
+    <div class="theme-view__head">
+      <p class="theme-view__back"><a href="gikai.html">← 別の街・問いを選びなおす</a></p>
+      <h2 class="theme-view__title" id="theme-title"></h2>
+    </div>
+
+    <!-- 0. 現在地サマリー（答えファースト・P0-IA v1.1／GUIDELINES v1.2裁定2）。genzaichi無しの街×問いは非表示 -->
+    <section class="genzaichi-card" id="genzaichi-card" hidden>
+      <p class="genzaichi-card__label">今の答え</p>
+      <p class="genzaichi-card__kotae" id="genzaichi-kotae"></p>
+      <div id="genzaichi-wakatta-wrap" hidden>
+        <p class="genzaichi-card__label genzaichi-card__label--wakatta">今わかっていること</p>
+        <ul class="genzaichi-card__list" id="genzaichi-wakatta"></ul>
+      </div>
+      <p class="genzaichi-card__note">AIによる要約・詳しくは下の記録から</p>
+    </section>
+
+    <section class="theme-block" id="theme-l1-section">
+      <h3 class="theme-block__title">いま使える制度</h3>
+      <div class="theme-block__body" id="theme-l1"></div>
+    </section>
+
+    <section class="theme-block" id="theme-l2-section" hidden>
+      <h3 class="theme-block__title">受け皿の実数</h3>
+      <div class="theme-block__body" id="theme-l2"></div>
+    </section>
+
+    <section class="theme-block" id="theme-l3-section">
+      <h3 class="theme-block__title">議会でどう話されてきたか</h3>
+      <div class="theme-block__body" id="theme-l3"></div>
+    </section>
+
+    <section class="theme-block" id="theme-chart-section" hidden>
+      <h3 class="theme-block__title">議論の推移</h3>
+      <p class="theme-block__note">この街全体での「医療的ケア児」言及数の年次推移（会議録検索システムの機械計数）</p>
+      <div class="kokkai-chart-wrap"><div class="kokkai-chart" id="theme-year-chart"></div></div>
+    </section>
+
+    <section class="theme-block" id="theme-kokkai-section" hidden>
+      <h3 class="theme-block__title">国の背景</h3>
+      <div class="kokkai-timeline" id="theme-kokkai-list"></div>
+    </section>
+
+    <section class="theme-block" id="theme-exit-section">
+      <h3 class="theme-block__title">次の一歩</h3>
+      <div class="exit-grid">
+        <button type="button" class="exit-card" id="exit-share">
+          <h4 class="exit-card__title">共有する</h4>
+          <p class="exit-card__body">この画面のURLを家族・支援者にコピーできます。</p>
+          <p class="exit-card__result" id="exit-share-result" role="status" hidden></p>
+        </button>
+        <div class="exit-card exit-card--static" id="exit-soudan">
+          <h4 class="exit-card__title">相談窓口に聞いてみる</h4>
+          <div class="exit-card__body" id="exit-soudan-body"></div>
+        </div>
+        <a class="exit-card" href="index.html">
+          <h4 class="exit-card__title">制度をくらべる</h4>
+          <p class="exit-card__body">制度カルテで、他の街と見くらべられます。</p>
+        </a>
+        <button type="button" class="exit-card" id="exit-wait">
+          <h4 class="exit-card__title">今は何もしない（様子を見る）</h4>
+          <p class="exit-card__body" id="exit-wait-body">それも、ひとつの選び方です。</p>
+        </button>
+      </div>
+    </section>
+
+    <p class="theme-view__footnote">収録は選定されたものであり、全ての質疑ではありません。制度は月次で更新しています。最終判断の前には、必ず窓口で最新の内容をご確認ください。</p>
+  </section>
+
+  <!-- 2.2 アンサーカード（問いを選ばず街だけ選んだ場合） -->
+  <section class="answer-wrap" id="answer-wrap" hidden>
+    <div class="answer-card" id="answer-card">
+      <p class="answer-card__eyebrow" id="answer-city"></p>
+      <p class="answer-card__number" id="answer-number"></p>
+      <p class="answer-card__method" id="answer-method" hidden>機械計数・会議録検索システムの全期間ヒット数</p>
+      <p class="answer-card__shuroku" id="answer-shuroku" hidden></p>
+      <p class="answer-card__themes" id="answer-themes" hidden></p>
+      <p class="answer-card__latest" id="answer-latest" hidden></p>
+      <p class="answer-card__soukatsu" id="answer-soukatsu"></p>
+      <p class="origin origin--kobunsho">公文書</p>
+    </div>
+  </section>
+
+  <!-- 2.3 街の議論（全topics） -->
+  <section class="gikai-topics-section" id="gikai-topics-section" hidden>
+    <h2 class="gikai-section__title">街の議論</h2>
+    <div id="gikai-topics-list"></div>
+  </section>
+
+  <!-- 2.4 国の動き（MACHIKARUTE_KOKKAIがある場合のみ） -->
+  <section class="kokkai-section" id="kokkai-section" hidden>
+    <h2 class="gikai-section__title">国は、こう動いてきた。</h2>
+    <p class="gikai-section__lede">医療的ケア児をめぐる法律・通知・国会質疑の背骨です。街の議論と重ねて読むと、制度がどこから来たかが見えます。</p>
+
+    <div class="kokkai-timeline" id="kokkai-timeline"></div>
+
+    <div class="kokkai-chart-wrap">
+      <div class="kokkai-chart" id="kokkai-chart"></div>
+    </div>
+
+    <div id="kokkai-topics-list"></div>
+  </section>
+
+  <!-- 2.5 全国の熱量マトリクス -->
+  <section class="matrix-section" id="matrix-section">
+    <h2 class="gikai-section__title" id="matrix-section-title">の街の、議論の分布。</h2>
+    <p class="gikai-section__note">議論の多寡は良し悪しの評価ではありません。人口規模や検索システムの制約の影響を受けます。言及＝会議録検索システムの全期間ヒット数（機械計数）。</p>
+    <div class="matrix-scroll">
+      <table class="matrix-table" id="matrix-table"></table>
+    </div>
+  </section>
+</main>
+
+<footer class="foot-letter">
+  <p class="foot-letter__close">議論があること自体が、<br>すでに一歩だと思います。<br><span class="foot-letter__sign">— ALIFE</span></p>
+  <p class="foot-letter__ps">追伸 — 会議録の読み違いに気づいたら<a href="mailto:masaking925@gmail.com?subject=マチカルテ議会ビュー訂正報告">こちらから</a>教えてください。すぐ直します。</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="gikai.js"></script>
+<script src="shigen.js"></script>
+<script src="kokkai.js"></script>
+<script src="theme-map.js"></script>
+<script src="genzaichi.js"></script>
+<script src="gikai-view.js"></script>
+</body>
+</html>
