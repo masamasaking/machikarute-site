@@ -5545,8 +5545,13 @@ window.MACHIKARUTE_GIKAI_STATS = {
    "soudan": 1,
    "ikou": 0
   },
-  "hits_total": null,
-  "hits_by_year": null
+  "hits_total": 28,
+  "hits_by_year": {
+   "2023": 1,
+   "2024": 8,
+   "2025": 17,
+   "2026": 2
+  }
  },
  "saitama-saitama": {
   "topic_count": 7,
@@ -5948,7 +5953,7 @@ window.MACHIKARUTE_GIKAI_STATS = {
    "soudan": 1,
    "ikou": 0
   },
-  "hits_total": null,
+  "hits_total": 10,
   "hits_by_year": null
  },
  "tokyo-ota": {
