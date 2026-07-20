@@ -1469,5 +1469,65 @@ window.MACHIKARUTE_SHIGEN = {
    }
   ],
   "data_date": "2026年3月末時点"
+ },
+ "tokyo-nishitokyo": {
+  "counts": {
+   "jido_hattatsu": 12,
+   "hokago_day": 20,
+   "tanki_nyusho": 5,
+   "homon_kango": 20
+  },
+  "ikea_taio_flag": null,
+  "sources": [
+   {
+    "name": "WAM NET 障害福祉サービス等情報公表システム オープンデータ（児童発達支援／放課後等デイサービス／短期入所）",
+    "url": "https://www.wam.go.jp/content/wamnet/pcpub/top/sfkopendata/",
+    "data_date": "2026年3月末時点",
+    "detail": {
+     "jihatsu(児童発達支援)": "https://www.wam.go.jp/content/files/pcpub/top/sfkopendata/202603/sfkopendata_202603_63.zip",
+     "houday(放課後等デイサービス)": "https://www.wam.go.jp/content/files/pcpub/top/sfkopendata/202603/sfkopendata_202603_65.zip",
+     "tanki_nyusho(短期入所)": "https://www.wam.go.jp/content/files/pcpub/top/sfkopendata/202603/sfkopendata_202603_24.zip"
+    }
+   },
+   {
+    "name": "厚生労働省 介護サービス情報公表システム オープンデータ（訪問看護）",
+    "url": "https://www.mhlw.go.jp/stf/kaigo-kouhyou_opendata.html",
+    "data_date": "2025年12月末時点（出力日2026年1月14日）",
+    "detail": {
+     "homon_kango(訪問看護)": "https://www.mhlw.go.jp/content/12300000/jigyosho_130.csv"
+    }
+   }
+  ],
+  "data_date": "2026年3月末時点"
+ },
+ "osaka-toyonaka": {
+  "counts": {
+   "jido_hattatsu": 81,
+   "hokago_day": 90,
+   "tanki_nyusho": 10,
+   "homon_kango": 84
+  },
+  "ikea_taio_flag": null,
+  "sources": [
+   {
+    "name": "WAM NET 障害福祉サービス等情報公表システム オープンデータ（児童発達支援／放課後等デイサービス／短期入所）",
+    "url": "https://www.wam.go.jp/content/wamnet/pcpub/top/sfkopendata/",
+    "data_date": "2026年3月末時点",
+    "detail": {
+     "jihatsu(児童発達支援)": "https://www.wam.go.jp/content/files/pcpub/top/sfkopendata/202603/sfkopendata_202603_63.zip",
+     "houday(放課後等デイサービス)": "https://www.wam.go.jp/content/files/pcpub/top/sfkopendata/202603/sfkopendata_202603_65.zip",
+     "tanki_nyusho(短期入所)": "https://www.wam.go.jp/content/files/pcpub/top/sfkopendata/202603/sfkopendata_202603_24.zip"
+    }
+   },
+   {
+    "name": "厚生労働省 介護サービス情報公表システム オープンデータ（訪問看護）",
+    "url": "https://www.mhlw.go.jp/stf/kaigo-kouhyou_opendata.html",
+    "data_date": "2025年12月末時点（出力日2026年1月14日）",
+    "detail": {
+     "homon_kango(訪問看護)": "https://www.mhlw.go.jp/content/12300000/jigyosho_130.csv"
+    }
+   }
+  ],
+  "data_date": "2026年3月末時点"
  }
 };
