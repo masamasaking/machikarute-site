@@ -1,8 +1,9 @@
-/* app/gikai-view.css — 議会ビュー専用スタイル。style.css をベースに再利用し、トークンのみを使う。
+/* app/gikai-view.css — 議会ビュー（L3 PoC）専用スタイル。style.css をベースに再利用し、トークンのみを使う。
  * 新しい色相・フォント・インラインhex/oklch・グラデーション・影・不要なアニメーションは追加しない。
+ * 件数・順位・濃淡を視覚的に表す部品（バー・ドット・マトリクス）は置かない（SPEC-L3-POC.md §6.3）。
  */
 
-/* ---- 2.1 hero（左バイアス・中央寄せ禁止）---- */
+/* ---- 画面1 hero（左バイアス・中央寄せ禁止）---- */
 .gikai-hero { padding: var(--space-2xl) var(--page-gutter) var(--space-2xl); }
 .gikai-hero__ask { max-width: 42em; }
 .gikai-hero__title {
@@ -27,7 +28,7 @@
   .gikai-picker .btn-compare { width: 100%; }
 }
 
-/* 存在しない自治体ID/テーマのエラー案内（評価語ではなく状態案内のため .answer-card__number--unconfirmed と同トークン） */
+/* 存在しない自治体IDのエラー案内（評価語ではなく状態案内） */
 .gikai-error { margin-top: var(--space-md); font-size: var(--text-sm); color: var(--color-unconfirmed); line-height: 1.8; }
 
 /* ---- 画面1: 問いカード（P0-IA.md §1画面1）---- */
@@ -59,35 +60,15 @@
 .term-chip:focus-visible .term-chip__pop,
 .term-chip.is-open .term-chip__pop { display: block; }
 
-/* ---- 画面2: この街の現在地（P0-IA.md §1画面2）---- */
-.theme-view { padding: var(--space-2xl) var(--page-gutter) var(--space-3xl); max-width: 56em; }
-.theme-view__back a { font-size: var(--text-sm); color: var(--color-neutral); }
-.theme-view__title {
+/* ---- 画面2: 公式記録を読む（SPEC-L3-POC.md §5）---- */
+.record-view { padding: var(--space-2xl) var(--page-gutter) var(--space-3xl); max-width: 56em; }
+.record-view__back a { font-size: var(--text-sm); color: var(--color-neutral); }
+.record-view__title {
   margin-top: var(--space-sm); font-family: var(--font-display); font-weight: 700;
   font-size: var(--text-xl); line-height: 1.4; overflow-wrap: anywhere;
 }
-/* 0. 現在地サマリー（答えファースト・GUIDELINES v1.2裁定2）。
- * status記号（○△×？）はテキストで示し、全status同一色（インク色）——色分けは評価表示になるため禁止 */
-.genzaichi-card {
-  margin-top: var(--space-xl); padding: var(--space-xl);
-  border: var(--rule-hairline); border-radius: var(--radius-md); background: var(--color-paper-2);
-}
-.genzaichi-card__label { font-size: var(--text-xs); font-weight: 700; color: var(--color-neutral); letter-spacing: 0.08em; }
-.genzaichi-card__label--wakatta { margin-top: var(--space-lg); }
-.genzaichi-card__kotae {
-  margin-top: var(--space-sm); font-family: var(--font-display); font-weight: 700;
-  font-size: var(--text-md); line-height: 1.6; color: var(--color-ink); overflow-wrap: anywhere;
-}
-.genzaichi-card__mark { font-family: var(--font-body); font-weight: 700; color: var(--color-ink); margin-inline-end: var(--space-xs); }
-.genzaichi-card__list { list-style: none; padding: 0; margin-top: var(--space-sm); display: grid; gap: var(--space-xs); }
-.genzaichi-card__item { padding-inline-start: var(--space-md); border-inline-start: 1px solid var(--color-rule); font-size: var(--text-sm); line-height: 1.8; }
-.genzaichi-card__link {
-  font-family: var(--font-body); font-size: var(--text-sm); line-height: 1.8; text-align: left;
-  color: var(--color-ink); background: none; border: none; padding: 0; cursor: pointer;
-  text-decoration: underline; text-decoration-color: var(--color-rule); text-decoration-thickness: 1px; text-underline-offset: 3px;
-}
-.genzaichi-card__link:hover { text-decoration-color: var(--color-accent); }
-.genzaichi-card__note { margin-top: var(--space-lg); font-size: var(--text-xs); color: var(--color-neutral); }
+/* 2. 範囲説明（生成文ではなく固定文） */
+.record-view__scope { margin-top: var(--space-sm); font-size: var(--text-sm); color: var(--color-muted); line-height: 1.8; }
 
 .theme-block { margin-top: var(--space-2xl); padding-top: var(--space-2xl); border-top: var(--rule-hairline); }
 .theme-block:first-of-type { margin-top: var(--space-xl); }
@@ -95,28 +76,38 @@
 .theme-block__note { margin-top: var(--space-xs); font-size: var(--text-sm); color: var(--color-neutral); line-height: 1.8; }
 .theme-block__body { margin-top: var(--space-lg); display: grid; gap: var(--space-lg); }
 
-.theme-item { padding: var(--space-lg); border: var(--rule-hairline); border-radius: var(--radius-md); background: var(--color-paper-2); }
-.theme-item__title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-base); line-height: 1.4; }
-.theme-item .kcell__amount { margin-top: var(--space-xs); }
-.theme-item .kcell__summary { margin-top: var(--space-xs); }
-
-/* 議会でどう話されてきたか: 原文が常時併置（詳細折りたたみにしない）・AI要約は原文の下 */
-.theme-topic + .theme-topic { margin-top: var(--space-xl); padding-top: var(--space-xl); border-top: var(--rule-hairline); }
-.theme-topic__head { font-size: var(--text-sm); font-weight: 700; color: var(--color-neutral); }
-.theme-topic__date { font-family: var(--font-outlier); font-variant-numeric: tabular-nums; color: var(--color-ink); }
-.layer3 { margin-top: var(--space-md); padding: var(--space-md); background: var(--color-paper-2); border-radius: var(--radius-sm); border-inline-start: 2px solid var(--color-accent); }
-.layer3__badge {
-  display: inline-block; font-size: var(--text-xs); font-weight: 700; color: var(--color-accent);
-  letter-spacing: 0.04em; border: 1px solid var(--color-accent); border-radius: 999px; padding: 0 var(--space-xs);
+/* 3. 記録（原典リンクは折りたたまず常時可視。SPEC §7 / §10-3） */
+.record + .record { margin-top: var(--space-xl); padding-top: var(--space-xl); border-top: var(--rule-hairline); }
+.record__head { font-size: var(--text-sm); font-weight: 700; color: var(--color-neutral); }
+.record__date { font-family: var(--font-outlier); font-variant-numeric: tabular-nums; color: var(--color-ink); }
+.record__gist { margin-top: var(--space-sm); font-size: var(--text-base); line-height: 1.9; color: var(--color-ink); }
+.record__quote {
+  margin-top: var(--space-md); padding-inline-start: var(--space-md);
+  border-inline-start: 2px solid var(--color-rule); font-size: var(--text-sm);
+  line-height: 1.9; color: var(--color-muted);
 }
-.layer3__row { margin-top: var(--space-sm); font-size: var(--text-sm); line-height: 1.9; }
-.layer3__label { display: block; font-size: var(--text-xs); font-weight: 700; color: var(--color-neutral); margin-bottom: var(--space-2xs); }
-.layer3__note { margin-top: var(--space-sm); font-size: var(--text-xs); color: var(--color-neutral); }
-/* 確認案内の定型行（GUIDELINES v1.2裁定1）: 3層ブロックの直下に常設するUI固定文言 */
-.layer3__kakunin { margin-top: var(--space-sm); font-size: var(--text-xs); color: var(--color-neutral); }
+.record__source { margin-top: var(--space-md); font-size: var(--text-sm); overflow-wrap: anywhere; }
+.record__source--none { color: var(--color-neutral); }
+.record__collected { margin-top: var(--space-2xs); font-size: var(--text-xs); color: var(--color-neutral); }
+.record-empty { font-size: var(--text-sm); color: var(--color-muted); line-height: 1.9; }
 
-/* 出口4カード — 同一の視覚的重み ---- */
-.exit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--space-md); align-items: stretch; }
+/* 4. 収録範囲カード（件数はこのカード内だけに置く。SPEC §5.2） */
+.shuroku-card {
+  margin-top: var(--space-lg); padding: var(--space-lg);
+  border: var(--rule-hairline); border-radius: var(--radius-md); background: var(--color-paper-2);
+}
+.shuroku-card__row { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: baseline; }
+.shuroku-card__row + .shuroku-card__row { margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: var(--rule-hairline); }
+.shuroku-card dt { flex: 0 0 8rem; font-size: var(--text-xs); font-weight: 700; color: var(--color-neutral); letter-spacing: 0.04em; }
+.shuroku-card dd { flex: 1 1 16rem; min-width: 0; margin: 0; font-size: var(--text-sm); line-height: 1.8; overflow-wrap: anywhere; }
+.shuroku-card__note { margin-top: var(--space-sm); font-size: var(--text-xs); color: var(--color-neutral); line-height: 1.8; }
+
+/* 5. 固定注記（全自治体共通の固定文。SPEC §5.3） */
+.fixed-notes { margin-top: var(--space-lg); padding-inline-start: var(--space-lg); display: grid; gap: var(--space-sm); }
+.fixed-notes li { font-size: var(--text-sm); color: var(--color-muted); line-height: 1.9; }
+
+/* 6. 補助導線4カード — 同一の視覚的重み（誘導しない） */
+.exit-grid { margin-top: var(--space-lg); display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--space-md); align-items: stretch; }
 .exit-card {
   display: block; width: 100%; height: 100%; text-align: left; font-family: var(--font-body); color: var(--color-ink);
   text-decoration: none; background: var(--color-paper-2); border: var(--rule-hairline); border-radius: var(--radius-md);
@@ -127,57 +118,20 @@
 .exit-card--static { cursor: default; }
 .exit-card__title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-base); line-height: 1.4; }
 .exit-card__body { margin-top: var(--space-sm); font-size: var(--text-sm); color: var(--color-muted); line-height: 1.8; }
+.exit-card__summary { font-size: var(--text-sm); color: var(--color-muted); line-height: 1.8; }
 .exit-card__detail { margin-top: var(--space-xs); font-size: var(--text-xs); color: var(--color-neutral); overflow-wrap: anywhere; }
 .exit-card__ask { margin-top: var(--space-sm); font-size: var(--text-xs); color: var(--color-neutral); font-style: italic; }
 .exit-card__result { margin-top: var(--space-sm); font-size: var(--text-xs); color: var(--color-accent); overflow-wrap: anywhere; }
 .exit-card.is-answered .exit-card__body { color: var(--color-ink); }
 
-.theme-view__footnote { margin-top: var(--space-2xl); padding-top: var(--space-lg); border-top: var(--rule-hairline); font-size: var(--text-xs); color: var(--color-neutral); line-height: 1.8; }
-
 @media (max-width: 40rem) {
   .theme-cards__grid { grid-template-columns: 1fr; }
   .exit-grid { grid-template-columns: 1fr; }
+  .shuroku-card dt { flex-basis: 100%; }
 }
 
-/* ---- 2.2 アンサーカード ---- */
-.answer-wrap { padding: 0 var(--page-gutter) var(--space-2xl); }
-.answer-card {
-  border: var(--rule-hairline); border-radius: var(--radius-md);
-  background: var(--color-paper-2); padding: var(--space-xl); max-width: 42em;
-}
-.answer-card__eyebrow { font-size: var(--text-sm); font-weight: 700; color: var(--color-neutral); letter-spacing: 0.04em; }
-.answer-card__number {
-  margin-top: var(--space-md); font-size: var(--text-xl); line-height: 1.3; color: var(--color-ink);
-}
-.answer-card__number .answer-card__num {
-  font-family: var(--font-outlier); font-variant-numeric: tabular-nums;
-  font-size: var(--text-2xl); font-weight: 500;
-}
-.answer-card__number.answer-card__number--unconfirmed { font-size: var(--text-md); color: var(--color-unconfirmed); line-height: 1.8; }
-.answer-card__method { margin-top: var(--space-2xs); font-size: var(--text-xs); color: var(--color-neutral); }
-.answer-card__shuroku { margin-top: var(--space-sm); font-size: var(--text-base); color: var(--color-ink); }
-.answer-card__shuroku .answer-card__shuroku-num {
-  font-family: var(--font-outlier); font-variant-numeric: tabular-nums;
-  font-size: var(--text-lg); font-weight: 500; padding-inline: var(--space-2xs);
-}
-.answer-card__themes { margin-top: var(--space-sm); font-size: var(--text-sm); color: var(--color-muted); }
-.answer-card__latest { margin-top: var(--space-sm); font-size: var(--text-sm); color: var(--color-muted); line-height: 1.8; }
-.answer-card__latest .answer-card__date { font-family: var(--font-outlier); font-variant-numeric: tabular-nums; color: var(--color-neutral); }
-.answer-card__soukatsu { margin-top: var(--space-lg); font-size: var(--text-base); line-height: 1.9; color: var(--color-ink); }
-
-/* ---- 2.3 街の議論 / 2.4 国会質疑リスト共通 ---- */
-.gikai-topics-section, .kokkai-section { padding: 0 var(--page-gutter) var(--space-2xl); border-top: var(--rule-hairline); padding-top: var(--space-2xl); }
-.gikai-section__title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); line-height: 1.35; }
-.gikai-section__lede, .gikai-section__note { margin-top: var(--space-sm); max-width: 42em; font-size: var(--text-sm); color: var(--color-neutral); line-height: 1.8; }
-
-#gikai-topics-list, #kokkai-topics-list { margin-top: var(--space-lg); max-width: 48em; }
-#gikai-topics-list .src, #kokkai-topics-list .src { padding-bottom: var(--space-md); border-bottom: var(--rule-hairline); }
-#gikai-topics-list .src + .src, #kokkai-topics-list .src + .src { margin-top: var(--space-md); }
-/* 論点タグ — .krow__note と同じ控えめさ（同じトークン値）。summary内に併記するのでinline指定 */
-.gikai-topic__tag { margin-inline-start: var(--space-sm); font-size: var(--text-xs); font-weight: 400; color: var(--color-neutral); white-space: normal; }
-
-/* ---- 2.4 国の動き：タイムライン ---- */
-.kokkai-timeline { margin-top: var(--space-xl); max-width: 48em; border-inline-start: var(--rule-hairline); }
+/* ---- 国の背景：タイムライン（件数・グラフは持たない）---- */
+.kokkai-timeline { margin-top: var(--space-lg); max-width: 48em; border-inline-start: var(--rule-hairline); }
 .kokkai-milestone { position: relative; padding: 0 0 var(--space-lg) var(--space-lg); }
 .kokkai-milestone::before {
   content: ""; position: absolute; left: -5px; top: 0.4em;
@@ -189,49 +143,6 @@
 .kokkai-milestone__title { margin-top: var(--space-2xs); font-family: var(--font-display); font-weight: 700; font-size: var(--text-md); line-height: 1.5; }
 .kokkai-milestone__gist { margin-top: var(--space-2xs); font-size: var(--text-sm); color: var(--color-muted); line-height: 1.8; }
 .kokkai-milestone__source { margin-top: var(--space-2xs); font-size: var(--text-xs); overflow-wrap: anywhere; }
-
-/* ---- 2.4 国の動き：年次バー（純CSS・装飾なし） ---- */
-.kokkai-chart-wrap { margin-top: var(--space-2xl); }
-.kokkai-chart {
-  display: flex; align-items: flex-end; gap: var(--space-md);
-  max-width: 48em; padding-bottom: var(--space-md); border-bottom: var(--rule-hairline);
-}
-.kokkai-bar { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; }
-.kokkai-bar__count { font-family: var(--font-outlier); font-variant-numeric: tabular-nums; font-size: var(--text-xs); color: var(--color-neutral); }
-/* track は固定高さの「100%」基準。fill の height% はここに対して計算される */
-.kokkai-bar__track { width: 100%; max-width: 2.5rem; height: 8rem; display: flex; align-items: flex-end; margin-top: var(--space-2xs); }
-.kokkai-bar__fill { width: 100%; background: var(--color-accent-soft); border-top: 2px solid var(--color-accent); }
-.kokkai-bar__year { margin-top: var(--space-2xs); font-size: var(--text-xs); color: var(--color-neutral); }
-
-/* ---- 2.5 全国の熱量マトリクス ---- */
-.matrix-section { padding: 0 var(--page-gutter) var(--space-3xl); border-top: var(--rule-hairline); padding-top: var(--space-2xl); }
-.matrix-scroll { margin-top: var(--space-xl); overflow-x: auto; border: var(--rule-hairline); border-radius: var(--radius-md); }
-.matrix-table { border-collapse: collapse; width: 100%; min-width: 44rem; font-size: var(--text-sm); }
-.matrix-table th, .matrix-table td { padding: var(--space-xs) var(--space-sm); text-align: left; border-bottom: var(--rule-hairline); }
-.matrix-table thead th { font-weight: 700; color: var(--color-neutral); font-size: var(--text-xs); white-space: nowrap; background: var(--color-paper-2); }
-.matrix-table .matrix-group th {
-  background: var(--color-paper-3); font-family: var(--font-display); font-weight: 700; color: var(--color-ink);
-  font-size: var(--text-sm); padding-top: var(--space-sm); padding-bottom: var(--space-sm);
-}
-.matrix-table .matrix-city {
-  position: sticky; left: 0; background: var(--color-paper); white-space: nowrap; z-index: var(--z-raised);
-}
-.matrix-table .matrix-group .matrix-city { background: var(--color-paper-3); }
-.matrix-city__btn {
-  font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-ink); text-decoration: none;
-  font-weight: 700; background: none; border: none; padding: 0; cursor: pointer;
-}
-.matrix-city__btn:hover { color: var(--color-accent); }
-.matrix-cell { text-align: center; }
-.matrix-hits {
-  font-family: var(--font-outlier); font-variant-numeric: tabular-nums;
-  text-align: right; color: var(--color-muted); white-space: nowrap;
-}
-.matrix-hits--none { color: var(--color-neutral); }
-.matrix-dot { display: inline-block; border-radius: var(--radius-sm); }
-.matrix-dot--s { width: 8px; height: 8px; background: var(--color-rule); }
-.matrix-dot--m { width: 12px; height: 12px; background: var(--color-accent-soft); }
-.matrix-dot--l { width: 16px; height: 16px; background: var(--color-accent); }
 
 @media (prefers-reduced-motion: reduce) {
   .gikai-hero__ask.reveal { animation-duration: 150ms; }

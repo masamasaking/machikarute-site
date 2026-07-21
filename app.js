@@ -19,9 +19,9 @@
   const yen = (n) => n.toLocaleString("ja-JP");
   const CONF_LABEL = { high: "確認済（公式明記）", medium: "公式・一部曖昧", low: "要確認" };
 
-  // L2「地域の資源」・L3「議会での議論」— 収集中のため両層とも欠損に耐える
+  // L2「地域の資源」— 収集中のため欠損に耐える。
+  // L3（議会での議論）の横並び比較はこの画面から外した（docs/SPEC-L3-POC.md §9 が docs/SPEC-L2L3-UI.md §4 を上書きする）
   const SHIGEN = window.MACHIKARUTE_SHIGEN || {};
-  const GIKAI = window.MACHIKARUTE_GIKAI || {};
   const SHIGEN_STATS = [
     { key: "jido_hattatsu", label: "児童発達支援" },
     { key: "hokago_day", label: "放課後等デイ" },
@@ -124,49 +124,6 @@
     </div>`;
   }
 
-  function gikaiTopicHTML(t, collectedAt) {
-    return `<details class="src">
-      <summary>${esc(t.date)} ${esc(t.kaigi)}</summary>
-      <div class="src__body">
-        <p class="kcell__summary">${esc(t.gist)}</p>
-        ${t.quote ? `<blockquote class="src__quote">${esc(t.quote)}</blockquote>` : ""}
-        <p class="src__meta">${t.source_url ? `<a href="${esc(t.source_url)}" target="_blank" rel="noopener">${esc(t.source_url)}</a><br>` : ""}取得日 ${esc(collectedAt)}</p>
-      </div>
-    </details>`;
-  }
-
-  function gikaiCellHTML(m) {
-    const g = GIKAI[m.id];
-    if (!g) {
-      return `<div class="kcell">
-        <p class="kcell__city">${esc(m.name)}</p>
-        <p class="kcell__summary">未収集</p>
-      </div>`;
-    }
-    if (g.status === "unconfirmed") {
-      return `<div class="kcell kcell--unconfirmed">
-        <p class="kcell__city">${esc(m.name)}</p>
-        <p class="kcell__summary">会議録からは確認できませんでした（議論されていないという意味ではありません）</p>
-      </div>`;
-    }
-    const themes = Array.isArray(g.themes) && g.themes.length ? `論点: ${g.themes.map(esc).join(" ・ ")}` : "";
-    const topicsHTML = (g.topics || []).slice(0, 3).map((t) => gikaiTopicHTML(t, g.collected_at)).join("");
-    return `<div class="kcell">
-      <p class="kcell__city">${esc(m.name)}</p>
-      ${themes ? `<p class="kcell__summary">${themes}</p>` : ""}
-      <p class="kcell__summary">${esc(g.soukatsu || "")}</p>
-      ${topicsHTML}
-      <p class="origin origin--kobunsho">公文書</p>
-    </div>`;
-  }
-
-  function renderGikaiRow(a, b) {
-    return `<div class="krow">
-      <div class="krow__labelbox"><h3 class="krow__label">議会での議論</h3><p class="krow__note">直近約3年の会議録から『医療的ケア児』の質疑を要約。公文書ベース</p></div>
-      <div class="krow__cells">${gikaiCellHTML(a)}${gikaiCellHTML(b)}</div>
-    </div>`;
-  }
-
   function render(a, b) {
     $("karte-title").textContent = `${a.name} と ${b.name} のカルテ`;
     $("karte-cols").innerHTML = `<span>項目</span><span>${esc(a.pref)} ${esc(a.name)}</span><span>${esc(b.pref)} ${esc(b.name)}</span>`;
@@ -183,7 +140,7 @@
         <div class="krow__cells">${cellHTML(a, ia, def, leadA)}${cellHTML(b, ib, def, leadB)}</div>
       </div>`;
     }).join("");
-    $("karte-rows").innerHTML = rows + renderShigenRow(a, b) + renderGikaiRow(a, b);
+    $("karte-rows").innerHTML = rows + renderShigenRow(a, b);
     $("karte").hidden = false;
   }
 

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>議会ビュー — うちの街は、うちの子のことを、話していますか。｜マチカルテ</title>
-<meta name="description" content="49自治体の議会会議録から「医療的ケア児」の質疑を集めました。制度の建前ではなく、議論の生の記録です。">
+<title>議会ビュー — うちの街の公式記録を、読んでみませんか。｜マチカルテ</title>
+<meta name="description" content="自治体の議会記録から、医療的ケア児に関する記録を収録しています。収録した記録を、日付・会議名・原典つきで読めます。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -20,13 +20,17 @@
 </header>
 
 <main>
-  <!-- 2.1 Hero -->
+  <!-- 画面1: 入口（P0-IA.md §1画面1 / SPEC-L3-POC.md §3） -->
   <section class="gikai-hero">
     <div class="gikai-hero__ask reveal" style="--i:0">
-      <h1 class="gikai-hero__title">うちの街は、<br>うちの子のことを、<br>話していますか。</h1>
-      <p class="gikai-hero__lede">49自治体の議会会議録から「医療的ケア児」の質疑を集めました。制度の建前ではなく、議論の生の記録です。</p>
+      <h1 class="gikai-hero__title">うちの街の公式記録を、<br>読んでみませんか。</h1>
+      <p class="gikai-hero__lede">自治体の議会記録から、医療的ケア児に関する記録を収録しています。</p>
 
       <form class="gikai-picker" id="gikai-picker" autocomplete="off">
+        <div class="picker__field">
+          <label for="gikai-sel">街を選ぶ</label>
+          <select id="gikai-sel" required></select>
+        </div>
         <fieldset class="theme-cards" id="theme-cards">
           <legend>知りたいことを選ぶ（任意）</legend>
           <div class="theme-cards__grid">
@@ -38,60 +42,46 @@
             <button type="button" class="theme-card" data-theme="soudan" aria-pressed="false">誰に相談すればいい？</button>
           </div>
         </fieldset>
-        <div class="picker__field">
-          <label for="gikai-sel">街を選ぶ</label>
-          <select id="gikai-sel" required></select>
-        </div>
-        <button type="submit" class="btn-compare" id="gikai-btn">見る</button>
+        <button type="submit" class="btn-compare" id="gikai-btn">記録を読む</button>
       </form>
       <p class="gikai-error" id="gikai-error" role="status" hidden>指定された街のデータが見つかりません。街を選びなおしてください。</p>
     </div>
   </section>
 
-  <!-- 画面2: この街の現在地（問い×街）P0-IA.md §1 -->
-  <section class="theme-view" id="theme-view" hidden>
-    <div class="theme-view__head">
-      <p class="theme-view__back"><a href="gikai.html">← 別の街・問いを選びなおす</a></p>
-      <h2 class="theme-view__title" id="theme-title"></h2>
+  <!-- 画面2: 公式記録を読む（SPEC-L3-POC.md §5.1 の順序に従う） -->
+  <section class="record-view" id="record-view" hidden>
+    <div class="record-view__head">
+      <p class="record-view__back"><a href="gikai.html">← 別の街・問いを選びなおす</a></p>
+      <!-- 1. 自治体名と生活課題 -->
+      <h2 class="record-view__title" id="record-title"></h2>
+      <!-- 2. 範囲説明 -->
+      <p class="record-view__scope">この画面は、議会の公式記録として収録した内容を示します。</p>
     </div>
 
-    <!-- 0. 現在地サマリー（答えファースト・P0-IA v1.1／GUIDELINES v1.2裁定2）。genzaichi無しの街×問いは非表示 -->
-    <section class="genzaichi-card" id="genzaichi-card" hidden>
-      <p class="genzaichi-card__label">今の答え</p>
-      <p class="genzaichi-card__kotae" id="genzaichi-kotae"></p>
-      <div id="genzaichi-wakatta-wrap" hidden>
-        <p class="genzaichi-card__label genzaichi-card__label--wakatta">今わかっていること</p>
-        <ul class="genzaichi-card__list" id="genzaichi-wakatta"></ul>
-      </div>
-      <p class="genzaichi-card__note">AIによる要約・詳しくは下の記録から</p>
+    <!-- 3. 該当する記録一覧（新しい順） -->
+    <section class="theme-block" id="record-list-section">
+      <h3 class="theme-block__title">収録した記録</h3>
+      <p class="theme-block__note" id="record-list-note" hidden></p>
+      <div class="theme-block__body" id="record-list"></div>
     </section>
 
-    <section class="theme-block" id="theme-l1-section">
-      <h3 class="theme-block__title">いま使える制度</h3>
-      <div class="theme-block__body" id="theme-l1"></div>
+    <!-- 4. 収録範囲カード（SPEC-L3-POC.md §5.2。収録件数はこのカード内だけに置く） -->
+    <section class="theme-block" id="shuroku-section">
+      <h3 class="theme-block__title">この街の記録について</h3>
+      <dl class="shuroku-card" id="shuroku-card"></dl>
+      <p class="shuroku-card__note">※収録した記録は、確認できた内容から選んだ一部です。全ての質疑ではありません。</p>
     </section>
 
-    <section class="theme-block" id="theme-l2-section" hidden>
-      <h3 class="theme-block__title">受け皿の実数</h3>
-      <div class="theme-block__body" id="theme-l2"></div>
+    <!-- 5. 固定注記（SPEC-L3-POC.md §5.3。生成文ではなく全自治体共通の固定文） -->
+    <section class="theme-block" id="fixed-notes-section">
+      <ul class="fixed-notes">
+        <li>収録しているのは、公式会議録から確認できた記録の一部です。全ての質疑ではありません。</li>
+        <li>記録がないことは、議論がなかったことを意味しません。</li>
+        <li>議会での答弁は、実施や予算化を保証するものではありません。現在の運用は窓口でご確認ください。</li>
+      </ul>
     </section>
 
-    <section class="theme-block" id="theme-l3-section">
-      <h3 class="theme-block__title">議会でどう話されてきたか</h3>
-      <div class="theme-block__body" id="theme-l3"></div>
-    </section>
-
-    <section class="theme-block" id="theme-chart-section" hidden>
-      <h3 class="theme-block__title">議論の推移</h3>
-      <p class="theme-block__note">この街全体での「医療的ケア児」言及数の年次推移（会議録検索システムの機械計数）</p>
-      <div class="kokkai-chart-wrap"><div class="kokkai-chart" id="theme-year-chart"></div></div>
-    </section>
-
-    <section class="theme-block" id="theme-kokkai-section" hidden>
-      <h3 class="theme-block__title">国の背景</h3>
-      <div class="kokkai-timeline" id="theme-kokkai-list"></div>
-    </section>
-
+    <!-- 6. 並列の補助導線 -->
     <section class="theme-block" id="theme-exit-section">
       <h3 class="theme-block__title">次の一歩</h3>
       <div class="exit-grid">
@@ -115,50 +105,11 @@
       </div>
     </section>
 
-    <p class="theme-view__footnote">収録は選定されたものであり、全ての質疑ではありません。制度は月次で更新しています。最終判断の前には、必ず窓口で最新の内容をご確認ください。</p>
-  </section>
-
-  <!-- 2.2 アンサーカード（問いを選ばず街だけ選んだ場合） -->
-  <section class="answer-wrap" id="answer-wrap" hidden>
-    <div class="answer-card" id="answer-card">
-      <p class="answer-card__eyebrow" id="answer-city"></p>
-      <p class="answer-card__number" id="answer-number"></p>
-      <p class="answer-card__method" id="answer-method" hidden>機械計数・会議録検索システムの全期間ヒット数</p>
-      <p class="answer-card__shuroku" id="answer-shuroku" hidden></p>
-      <p class="answer-card__themes" id="answer-themes" hidden></p>
-      <p class="answer-card__latest" id="answer-latest" hidden></p>
-      <p class="answer-card__soukatsu" id="answer-soukatsu"></p>
-      <p class="origin origin--kobunsho">公文書</p>
-    </div>
-  </section>
-
-  <!-- 2.3 街の議論（全topics） -->
-  <section class="gikai-topics-section" id="gikai-topics-section" hidden>
-    <h2 class="gikai-section__title">街の議論</h2>
-    <div id="gikai-topics-list"></div>
-  </section>
-
-  <!-- 2.4 国の動き（MACHIKARUTE_KOKKAIがある場合のみ） -->
-  <section class="kokkai-section" id="kokkai-section" hidden>
-    <h2 class="gikai-section__title">国は、こう動いてきた。</h2>
-    <p class="gikai-section__lede">医療的ケア児をめぐる法律・通知・国会質疑の背骨です。街の議論と重ねて読むと、制度がどこから来たかが見えます。</p>
-
-    <div class="kokkai-timeline" id="kokkai-timeline"></div>
-
-    <div class="kokkai-chart-wrap">
-      <div class="kokkai-chart" id="kokkai-chart"></div>
-    </div>
-
-    <div id="kokkai-topics-list"></div>
-  </section>
-
-  <!-- 2.5 全国の熱量マトリクス -->
-  <section class="matrix-section" id="matrix-section">
-    <h2 class="gikai-section__title" id="matrix-section-title">の街の、議論の分布。</h2>
-    <p class="gikai-section__note">議論の多寡は良し悪しの評価ではありません。人口規模や検索システムの制約の影響を受けます。言及＝会議録検索システムの全期間ヒット数（機械計数）。</p>
-    <div class="matrix-scroll">
-      <table class="matrix-table" id="matrix-table"></table>
-    </div>
+    <!-- 国の背景（kokkai milestones。数値・グラフは持たない） -->
+    <section class="theme-block" id="theme-kokkai-section" hidden>
+      <h3 class="theme-block__title">国の背景</h3>
+      <div class="kokkai-timeline" id="theme-kokkai-list"></div>
+    </section>
   </section>
 </main>
 
@@ -169,10 +120,7 @@
 
 <script src="data.js"></script>
 <script src="gikai.js"></script>
-<script src="shigen.js"></script>
 <script src="kokkai.js"></script>
-<script src="theme-map.js"></script>
-<script src="genzaichi.js"></script>
 <script src="gikai-view.js"></script>
 </body>
 </html>
