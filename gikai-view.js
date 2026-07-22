@@ -88,8 +88,20 @@
     return "seirei";
   }
 
+  // 街の母集合は「L1制度データ（DATA）」と「L3議会データ（GIKAI）」の和集合。
+  // L3だけ収録した街（制度カルテに無い街）もこの画面から読めるようにする。
+  // DATAに無いidは gikai.js の {id,name,pref} から最小の自治体オブジェクトを作る（itemsは持たない）。
+  function municipalityList() {
+    const byId = new Map(DATA.map((m) => [m.id, m]));
+    for (const id of Object.keys(GIKAI)) {
+      const g = GIKAI[id];
+      if (!byId.has(id) && g && g.name) byId.set(id, { id, name: g.name, pref: g.pref || "" });
+    }
+    return Array.from(byId.values());
+  }
+
   function sortedMunicipalities() {
-    return DATA.slice().sort((a, b) => {
+    return municipalityList().sort((a, b) => {
       const ga = GROUP_ORDER.indexOf(groupOf(a));
       const gb = GROUP_ORDER.indexOf(groupOf(b));
       if (ga !== gb) return ga - gb;
@@ -194,7 +206,10 @@
       // URLとして扱えない値はリンクにせず、そのまま名称として出す
       rows.push(`<div class="shuroku-card__row"><dt>検索システム</dt><dd>${esc(g.kensaku_system)}</dd></div>`);
     }
+    if (g.search_terms) rows.push(`<div class="shuroku-card__row"><dt>検索した言葉</dt><dd>「${esc(g.search_terms)}」</dd></div>`);
     if (g.period) rows.push(`<div class="shuroku-card__row"><dt>対象期間</dt><dd>${esc(g.period)}</dd></div>`);
+    if (g.target_meetings) rows.push(`<div class="shuroku-card__row"><dt>対象会議</dt><dd>${esc(g.target_meetings)}</dd></div>`);
+    if (g.search_method) rows.push(`<div class="shuroku-card__row"><dt>収集方法</dt><dd>${esc(g.search_method)}</dd></div>`);
     if (g.collected_at) rows.push(`<div class="shuroku-card__row"><dt>収集日</dt><dd>${esc(g.collected_at)}</dd></div>`);
     const n = Array.isArray(g.topics) ? g.topics.length : 0;
     rows.push(`<div class="shuroku-card__row"><dt>収録した記録</dt><dd>${esc(String(n))}件</dd></div>`);
@@ -217,6 +232,9 @@
         ${d.madoguchi ? `<p class="exit-card__detail">${chipify(d.madoguchi)}</p>` : ""}
         ${d.renraku ? `<p class="exit-card__detail">${chipify(d.renraku)}</p>` : ""}
         ${askHTML}`;
+    } else if (!m.items) {
+      // L1（制度カルテ）に未収録の街。制度カルテへ送ると該当が無く行き止まりになるため誘導しない
+      soudanBody.innerHTML = `<p class="exit-card__summary">この街は制度カルテ（制度の収録）にはまだ入っていません。窓口は市の公式サイトでご確認ください。</p>${askHTML}`;
     } else {
       soudanBody.innerHTML = `<p class="exit-card__summary">この街の相談窓口情報は、まだ確認できていません。<a href="index.html">制度カルテ</a>でご確認ください。</p>${askHTML}`;
     }
@@ -286,7 +304,7 @@
   // 街（＋任意の問い）を選んで記録を表示する。存在しないIDはエラー案内、未知のテーマは「問い未選択」として扱う
   function selectView(id, themeKey, opts) {
     opts = opts || {};
-    const m = DATA.find((d) => d.id === id);
+    const m = municipalityList().find((d) => d.id === id);
     if (!m) {
       // 直前の街の記録が残ったままエラーだけ出る状態を作らない。
       // 表示（記録ビュー・街セレクト・テーマカード）と内部状態（selectedTheme）を同時に初期化してからエラーを出す
