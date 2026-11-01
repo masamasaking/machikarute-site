@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>議会ビュー — うちの街の公式記録を、読んでみませんか。｜マチカルテ</title>
 <meta name="description" content="自治体の議会記録から、医療的ケア児に関する記録を収録しています。収録した記録を、日付・会議名・原典つきで読めます。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="マチカルテ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="議会ビュー — うちの街の公式記録を、読んでみませんか。｜マチカルテ">
+<meta property="og:description" content="自治体の議会記録から、医療的ケア児に関する記録を収録しています。収録した記録を、日付・会議名・原典つきで読めます。">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -16,7 +22,9 @@
 
 <header class="nav-edge">
   <a class="wordmark" href="index.html">マチカルテ</a>
-  <a class="cta-outline" href="index.html">制度をくらべる</a>
+  <nav class="nav-links" aria-label="サイト内">
+    <a class="cta-outline" href="index.html">制度をくらべる</a>
+  </nav>
 </header>
 
 <main>
@@ -53,7 +61,7 @@
     <div class="record-view__head">
       <p class="record-view__back"><a href="gikai.html">← 別の街・問いを選びなおす</a></p>
       <!-- 1. 自治体名と生活課題 -->
-      <h2 class="record-view__title" id="record-title"></h2>
+      <h2 class="record-view__title" id="record-title" tabindex="-1"></h2>
       <!-- 2. 範囲説明 -->
       <p class="record-view__scope">この画面は、議会の公式記録として収録した内容を示します。</p>
     </div>
@@ -86,9 +94,9 @@
       <h3 class="theme-block__title">次の一歩</h3>
       <div class="exit-grid">
         <button type="button" class="exit-card" id="exit-share">
-          <h4 class="exit-card__title">共有する</h4>
-          <p class="exit-card__body">この画面のURLを家族・支援者にコピーできます。</p>
-          <p class="exit-card__result" id="exit-share-result" role="status" hidden></p>
+          <span class="exit-card__title">共有する</span>
+          <span class="exit-card__body">この画面のURLを家族・支援者にコピーできます。</span>
+          <span class="exit-card__result" id="exit-share-result" role="status" hidden></span>
         </button>
         <div class="exit-card exit-card--static" id="exit-soudan">
           <h4 class="exit-card__title">相談窓口に聞いてみる</h4>
@@ -99,8 +107,8 @@
           <p class="exit-card__body">制度カルテで、他の街と見くらべられます。</p>
         </a>
         <button type="button" class="exit-card" id="exit-wait">
-          <h4 class="exit-card__title">今は何もしない（様子を見る）</h4>
-          <p class="exit-card__body" id="exit-wait-body">それも、ひとつの選び方です。</p>
+          <span class="exit-card__title">今は何もしない（様子を見る）</span>
+          <span class="exit-card__body" id="exit-wait-body">それも、ひとつの選び方です。</span>
         </button>
       </div>
     </section>
@@ -118,9 +126,9 @@
   <p class="foot-letter__ps">追伸 — 会議録の読み違いに気づいたら<a href="mailto:masaking925@gmail.com?subject=マチカルテ議会ビュー訂正報告">こちらから</a>教えてください。すぐ直します。</p>
 </footer>
 
-<script src="data.js"></script>
-<script src="gikai.js"></script>
-<script src="kokkai.js"></script>
-<script src="gikai-view.js"></script>
+<script src="data.js" defer></script>
+<script src="gikai.js" defer></script>
+<script src="kokkai.js" defer></script>
+<script src="gikai-view.js" defer></script>
 </body>
 </html>

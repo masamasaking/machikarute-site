@@ -123,6 +123,11 @@
 .exit-card__ask { margin-top: var(--space-sm); font-size: var(--text-xs); color: var(--color-neutral); font-style: italic; }
 .exit-card__result { margin-top: var(--space-sm); font-size: var(--text-xs); color: var(--color-accent); overflow-wrap: anywhere; }
 .exit-card.is-answered .exit-card__body { color: var(--color-ink); }
+/* button 内は phrasing content しか置けないため、見出し・段落の代わりに span を使う。h4/p と同じ見た目にするため block 化する */
+button.exit-card > .exit-card__title,
+button.exit-card > .exit-card__body,
+button.exit-card > .exit-card__result { display: block; }
+button.exit-card > .exit-card__result[hidden] { display: none; }
 
 @media (max-width: 40rem) {
   .theme-cards__grid { grid-template-columns: 1fr; }

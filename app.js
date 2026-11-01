@@ -182,6 +182,8 @@
     if (a.id === b.id) { note.textContent = "同じ街どうしは比較できません。別の街を選んでください。"; return; }
     note.textContent = "";
     render(a, b);
+    // キーボード・読み上げ利用者が結果に移れるよう、見出しへフォーカスを移す（スクロールは従来どおり）
+    $("karte-title").focus({ preventScroll: true });
     $("karte").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 

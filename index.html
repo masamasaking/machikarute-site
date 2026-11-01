@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>マチカルテ — 医療的ケア児と家族のための、自治体くらべるカルテ</title>
 <meta name="description" content="引っ越しで、わが子への支援はどう変わる？ 医療的ケア児家庭のための自治体制度比較。全項目に公式出典つき。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="マチカルテ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="マチカルテ — 医療的ケア児と家族のための、自治体くらべるカルテ">
+<meta property="og:description" content="引っ越しで、わが子への支援はどう変わる？ 医療的ケア児家庭のための自治体制度比較。全項目に公式出典つき。">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -15,10 +21,10 @@
 
 <header class="nav-edge">
   <a class="wordmark" href="#">マチカルテ</a>
-  <div class="nav-links">
+  <nav class="nav-links" aria-label="サイト内">
     <a class="cta-outline" href="gikai.html">議会ビュー</a>
     <a class="cta-outline" href="#shikumi">データのつくり方</a>
-  </div>
+  </nav>
 </header>
 
 <main>
@@ -39,10 +45,10 @@
         </div>
         <button type="submit" class="btn-compare" id="btn-compare">くらべる</button>
       </form>
-      <p class="picker__note" id="picker-note"></p>
+      <p class="picker__note" id="picker-note" role="status"></p>
     </div>
 
-    <div class="hero__proof reveal" style="--i:1" id="hero-proof" aria-label="実際のデータ差の例">
+    <div class="hero__proof reveal" style="--i:1" id="hero-proof" role="group" aria-label="実際のデータ差の例">
       <!-- app.js が実データから1件の差分例を描画する。捏造数値は使わない -->
     </div>
   </section>
@@ -50,7 +56,7 @@
   <!-- 比較カルテ本体 -->
   <section class="karte" id="karte" hidden>
     <div class="karte__head">
-      <h2 class="karte__title" id="karte-title"></h2>
+      <h2 class="karte__title" id="karte-title" tabindex="-1"></h2>
       <p class="karte__sub">それぞれの値の「出典」を開くと、根拠になった自治体公式ページの原文が読めます。<span class="nowrap">取得日つき。</span></p>
     </div>
     <div class="karte__cols" id="karte-cols" aria-hidden="true"></div>
@@ -81,8 +87,8 @@
   <p class="foot-letter__legal" id="foot-meta"></p>
 </footer>
 
-<script src="data.js"></script>
-<script src="shigen.js"></script>
-<script src="app.js"></script>
+<script src="data.js" defer></script>
+<script src="shigen.js" defer></script>
+<script src="app.js" defer></script>
 </body>
 </html>

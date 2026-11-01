@@ -329,7 +329,11 @@
     $("record-view").hidden = false;
     syncThemeCards(theme);
     selectedTheme = theme;
-    if (opts.scroll) $("record-view").scrollIntoView({ behavior: "smooth", block: "start" });
+    if (opts.scroll) {
+      // キーボード・読み上げ利用者が結果に移れるよう、見出しへフォーカスを移す（スクロールは従来どおり）
+      $("record-title").focus({ preventScroll: true });
+      $("record-view").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
     return true;
   }
 
